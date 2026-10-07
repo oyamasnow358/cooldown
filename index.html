@@ -41,7 +41,7 @@
     font-weight: 700;
     -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
     touch-action: manipulation; overscroll-behavior: none;
-    display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column; height: 100vh; height: 100dvh;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     overflow-x: hidden; transition: background-color .8s;
   }
@@ -74,7 +74,7 @@
   @keyframes ring { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 
   main { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 0 20px 18px; }
-  .screen { flex: 1; display: flex; flex-direction: column; min-height: 0; animation: fadein .3s ease-out; gap: clamp(8px, 1.6vh, 16px); }
+  .screen { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; animation: fadein .3s ease-out; gap: clamp(8px, 1.6vh, 16px); }
   @keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
   @keyframes pop { from { transform: scale(.7); opacity: 0; } to { transform: none; opacity: 1; } }
   @keyframes wiggle { 20%, 60% { transform: translate(-50%, -50%) rotate(-8deg); } 40%, 80% { transform: translate(-50%, -50%) rotate(8deg); } }
@@ -277,6 +277,103 @@
     .lvbtn { min-height: clamp(54px, 7.4vh, 90px); }
     .stage { width: min(78vw, 42vh); }
     .tside { max-width: 92vw; }
+  }
+
+  /* モードを えらぶ */
+  .mgrid { flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(230px, 40vw), 1fr)); gap: clamp(10px, 2vw, 20px); align-content: center; padding: 6px; }
+  .mcard { background: #fff; border: 6px solid var(--c); border-radius: 30px; padding: clamp(10px, 2vh, 22px) 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; box-shadow: 0 7px 0 var(--c); }
+  .mcard .emo { font-size: clamp(50px, min(8vw, 11vh), 96px); }
+  .mcard b { font-size: clamp(22px, 2.8vw, 34px); color: var(--c); }
+  .mcard small { font-size: clamp(13px, 1.6vw, 17px); color: var(--sub); }
+  .mcard:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--c); }
+
+  /* ---- iPhone など 小さい 画面 ---- */
+  @media (max-width: 600px), (max-height: 520px) {
+    .topbar { min-height: 50px; padding: 4px 10px; gap: 8px; }
+    .topbar .appname { display: none; }
+    .chip { font-size: 16px; padding: 2px 10px 2px 6px; border-width: 2px; }
+    .chip .emo { font-size: 22px; }
+    .gear { width: 44px; height: 44px; font-size: 22px; }
+    main { padding: 0 10px 10px; }
+    .screen { gap: 8px; }
+    .title { font-size: 22px; }
+    .title small { font-size: 13px; }
+    .big-btn { min-width: 0; min-height: 60px; padding: 0 22px; font-size: 21px; box-shadow: 0 5px 0 var(--go-d); }
+    .big-btn.blue { box-shadow: 0 5px 0 var(--blue-d); } .big-btn.teal { box-shadow: 0 5px 0 var(--teal-d); } .big-btn.white { box-shadow: 0 5px 0 var(--line); }
+    .mid-btn { min-height: 50px; padding: 0 16px; font-size: 17px; }
+    .actions { gap: 10px; }
+    .lvbtn { min-height: 50px; font-size: 19px; border-width: 4px; border-radius: 18px; padding: 0 14px; box-shadow: 0 3px 0 var(--c); }
+    .thermo { gap: 6px; }
+    .hello { font-size: 19px; }
+    .nextcard { font-size: 18px; padding: 10px 14px; gap: 10px; border-width: 4px; }
+    .thead { font-size: 20px; }
+    .tmsg { font-size: 24px; }
+    .tsub { font-size: 15px; }
+    .safe, .camnote { font-size: 13px; }
+    .tside { gap: 8px; }
+    .tcard { padding: 10px 8px; border-width: 4px; border-radius: 20px; }
+    .tcard .emo { font-size: 40px; }
+    .tcard b { font-size: 17px; }
+    .tcard small { font-size: 12px; }
+    .tgrid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px 8px; }
+    .ccard { font-size: 15px; padding: 8px 4px; border-width: 4px; border-radius: 18px; }
+    .ccard .emo { font-size: 34px; }
+    .cgrid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+    .rline { font-size: 26px; padding: 14px; border-radius: 22px; }
+    .mus { font-size: 110px; }
+    .mcard { border-width: 4px; border-radius: 22px; box-shadow: 0 5px 0 var(--c); padding: 10px 6px; }
+    .mcard .emo { font-size: 44px; }
+    .mcard b { font-size: 19px; }
+    .mgrid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+    .candle { height: 110px; width: 38px; }
+    .cake { padding: 12px 14px 0; gap: 14px; border-bottom-width: 12px; }
+    .blowbtn { min-height: 60px; font-size: 18px; }
+    .swatch { width: 90px; height: 90px; font-size: 60px; border-radius: 22px; }
+    .fdot { width: 70px; }
+    .sosbox h1 { font-size: 44px; }
+    .tfoot .quit, .tfoot .skip { font-size: 14px; padding: 8px 12px; }
+    .aqua { min-height: 200px; border-radius: 24px; }
+    .bigcount { -webkit-text-stroke-width: 4px; }
+    .stage-emo { font-size: 90px; }
+    .tbody { flex: 1 0 auto; }
+    .board { flex: 1 0 auto; min-height: 300px; }
+    .tmain { flex: 1 0 auto; }
+    .split { flex: 1 0 auto; }
+    .center { flex: 1 0 auto; }
+  }
+  @media (max-width: 600px) and (orientation: portrait) {
+    .volc { width: min(46vw, 20vh); }
+    .stage { width: min(68vw, 33vh); }
+    .split { gap: 8px; }
+    .home .split .volc { width: min(40vw, 17vh); }
+    .mgrid { grid-template-columns: 1fr 1fr; }
+    .mgrid .mcard:last-child { grid-column: span 2; }
+  }
+  /* よこむきの iPhone（たかさが ひくい） */
+  @media (max-height: 520px) and (orientation: landscape) {
+    .title small { display: none; }
+    .split, .tmain { flex-direction: row; gap: 16px; }
+    .volc { width: min(30vw, 44vh); }
+    .volc .vname { font-size: 18px; }
+    .thermo { width: min(54vw, 460px); gap: 5px; }
+    .lvbtn { min-height: 40px; font-size: 17px; }
+    .lvbtn .emo { font-size: 1.35em; }
+    .stage { width: min(40vw, 64vh); }
+    .tside { max-width: 52vw; }
+    .mgrid { grid-template-columns: repeat(5, 1fr); }
+    .mcard small { display: none; }
+    .candle { height: 90px; }
+    .mus { font-size: 80px; }
+    .rline { font-size: 24px; padding: 10px 14px; }
+    .thead { display: none; }
+    .board { min-height: calc(100dvh - 130px); }
+    .tmsg { font-size: 21px; }
+    .cake { gap: 10px; }
+    .candle { height: 80px; width: 32px; }
+    .meter { height: 18px; }
+    .swatch { width: 64px; height: 64px; font-size: 42px; }
+    .fdot { width: 56px; font-size: 30px; }
+    .stage { width: min(40vw, 58vh); }
   }
 
   /* ---------- 先生用：設定 ---------- */
@@ -483,7 +580,7 @@ function jaSay(t) {
     camera: true, mic: true, micSense: 'mid',
     tools: TOOL_IDS.slice(),
     holdSec: 10, holdRounds: 2, breathCycles: 4, breathPace: '4-6', candles: 5, countMode: 'down10', restMin: 2,
-    talk: DEFAULT_TALK, goal: 1, helpAfter: 4, countVoice: true
+    talk: DEFAULT_TALK, startMode: 'menu', goal: 1, helpAfter: 4, countVoice: true
   };
   function newProfile(name, icon) { return { id: 'p' + uid(), name: name, icon: icon, stars: 0, practice: {}, records: [], plan: { mode: 'auto', mine: ['hold', 'breath', 'name', 'read'] } }; }
   function normalize(s) {
@@ -780,12 +877,93 @@ function jaSay(t) {
     setView('who', [
       h('h1', { class: 'title' }, 'だれが つかう？'),
       h('div', { class: 'tgrid' }, store.profiles.map(p => h('button', {
-        type: 'button', class: 'tcard', onclick: () => { if (!tapOk()) return; sfx.tap(); speak(p.name); store.currentId = p.id; persist(); renderHome(); }
+        type: 'button', class: 'tcard', onclick: () => { if (!tapOk()) return; sfx.tap(); speak(p.name); store.currentId = p.id; persist(); renderTop(); }
       }, E(p.icon), h('b', null, p.name), h('small', null, '⭐ ' + p.stars))))
     ]);
   }
 
   /* ---- ホーム：いま どんな きもち？ ---- */
+  function renderTop() { if (S().startMode === 'feel') renderHome(); else renderStart(); }
+
+  /* ---- はじめ：モードを えらぶ ---- */
+  function renderStart() {
+    screen = 'start'; ses = null; practiceTool = null; tint(null);
+    const M = [
+      { e: '🌋', n: 'クールダウン', d: 'いま おこっている・いらいら する', c: '#F76707', go: renderHome },
+      { e: '🧰', n: 'れんしゅう', d: 'おちついて いる ときに', c: '#0CA678', go: () => renderMenu('practice') },
+      { e: '📒', n: 'きもち チェック', d: 'あさ・かえりに きもちを つける', c: '#1C7ED6', go: renderCheckin },
+      { e: '📖', n: 'いかりって なに？', d: 'こころの 火山の おはなし', c: '#7048E8', go: () => renderStory(0) },
+      { e: '🙋', n: 'たすけて カード', d: 'せんせいに みせる', c: '#E03131', go: showSOS }
+    ];
+    setView('start', [
+      h('h1', { class: 'title' }, 'なにを する？'),
+      h('div', { class: 'mgrid' }, M.map(m => h('button', { type: 'button', class: 'mcard', style: '--c:' + m.c, onclick: () => { if (!tapOk()) return; sfx.tap(); if (m.go !== showSOS) speak(m.n); m.go(); } },
+        E(m.e), h('b', null, m.n), h('small', null, m.d))))
+    ]);
+    if (!EMBED) speak('なにを する？');
+  }
+
+  /* ---- きもち チェック（あさの かい・かえりの かい） ---- */
+  function renderCheckin() {
+    screen = 'checkin'; tint(null);
+    const v = volcano(0, false);
+    let done = false;
+    const msg = h('div', { class: 'hello', hidden: true });
+    const acts = h('div', { class: 'actions', hidden: true });
+    const th = thermo((lv, el) => {
+      if (done) return; done = true;
+      el.classList.add('cur');
+      v.setLevel(lv);
+      const p = cur(); p.records.push({ t: Date.now(), mode: 'checkin', from: lv, to: lv, tools: [] }); trim(p); persist();
+      msg.hidden = false; acts.hidden = false;
+      if (lv >= 2) {
+        msg.textContent = 'おしえて くれて ありがとう。クールダウン してみる？';
+        speak('おしえて くれて ありがとう。クールダウン してみる？');
+        acts.append(h('button', { type: 'button', class: 'big-btn go', onclick: () => { if (tapOk()) startHelp(lv); } }, '🌋 クールダウン'),
+          h('button', { type: 'button', class: 'big-btn white', onclick: () => { if (tapOk()) renderTop(); } }, '🏠 おわる'));
+      } else {
+        msg.textContent = lv === 0 ? 'おだやか だね。いい かんじ！' : 'おしえて くれて ありがとう。';
+        speak(msg.textContent); sfx.chime();
+        acts.append(h('button', { type: 'button', class: 'big-btn go', onclick: () => { if (tapOk()) renderTop(); } }, '✓ おわる'));
+      }
+      th.hidden = true;
+    });
+    setView('home', [
+      h('h1', { class: 'title' }, 'きょうの きもちは？'),
+      h('div', { class: 'split' }, v, h('div', { class: 'center', style: 'flex:none' }, th, msg, acts)),
+      h('div', { class: 'actions' }, h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) renderTop(); } }, '◀ もどる'))
+    ]);
+    speak('きょうの きもちは？');
+  }
+
+  /* ---- いかりって なに？（おはなし） ---- */
+  const STORY = [
+    { v: 0, t: 'だれの こころにも「火山」が あるよ。' },
+    { v: 3, t: 'いやな ことが あると、火山が あつく なる。これが「いかり」。' },
+    { e: '👍', t: 'おこるのは わるい ことじゃ ないよ。だれでも おこる。' },
+    { e: '🙅', t: 'でも、たたく・なげる・わるくちは しない。じぶんも ともだちも かなしく なるから。' },
+    { v: 4, t: 'あつく なりすぎると、あたまで かんがえるのが むずかしく なる。' },
+    { e: '🌬️', t: 'そんな ときは、まず いきを ふーっ。からだから ひやそう。' },
+    { e: '💬', t: 'すこし ひえたら、きもちを ことばに しよう。こころが もっと しずかに なるよ。' },
+    { e: '🙋', t: 'ひとりで むずかしい ときは「たすけて」って いおう。' },
+    { v: 0, t: 'れんしゅう すると、火山を しずめるのが じょうずに なるよ！' }
+  ];
+  function renderStory(i) {
+    screen = 'story'; tint(null);
+    const s = STORY[i], last = i === STORY.length - 1;
+    setView('center', [h('div', { class: 'center' },
+      s.v != null ? volcano(s.v, false) : E(s.e, 'mus'),
+      h('div', { class: 'hello' }, s.t),
+      h('div', { class: 'rprog' }, STORY.map((_, k) => h('i', { class: k <= i ? 'on' : '' }))),
+      h('div', { class: 'actions' },
+        h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) { if (i > 0) renderStory(i - 1); else renderTop(); } } }, '◀'),
+        h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk(300)) speak(s.t); } }, '🔊'),
+        last ? h('button', { type: 'button', class: 'big-btn go', onclick: () => { if (tapOk()) renderMenu('practice'); } }, '🧰 れんしゅう')
+             : h('button', { type: 'button', class: 'big-btn blue', onclick: () => { if (tapOk()) { sfx.tap(); renderStory(i + 1); } } }, 'つぎ ▶'),
+        last ? h('button', { type: 'button', class: 'big-btn white', onclick: () => { if (tapOk()) renderTop(); } }, '🏠 おわる') : null))]);
+    speak(s.t);
+  }
+
   function renderHome() {
     screen = 'home'; ses = null; practiceTool = null; tint(null);
     const v = volcano(0, false);
@@ -793,7 +971,8 @@ function jaSay(t) {
       h('h1', { class: 'title' }, 'いま、どんな きもち？', h('small', null, 'こころの 火山は どれくらい？ タッチして おしえてね')),
       h('div', { class: 'split' }, v, thermo(lv => startHelp(lv))),
       h('div', { class: 'actions' },
-        h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) { sfx.tap(); renderMenu('practice'); } } }, E('🧰'), 'れんしゅう する'),
+        S().startMode === 'feel' ? h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) { sfx.tap(); renderMenu('practice'); } } }, E('🧰'), 'れんしゅう する')
+          : h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) renderStart(); } }, '◀ もどる'),
         h('button', { type: 'button', class: 'mid-btn sos', onclick: () => { if (tapOk()) showSOS(); } }, E('🙋'), 'たすけて カード'))
     ]);
     if (!EMBED) speak('いま、どんな きもち？');
@@ -816,7 +995,7 @@ function jaSay(t) {
         h('div', { class: 'hello' }, 'おだやか なんだね。いいね！', h('br'), 'おちついて いる ときに れんしゅう すると、', h('br'), 'こまった ときに できるように なるよ'),
         h('div', { class: 'actions' },
           h('button', { type: 'button', class: 'big-btn teal', onclick: () => { if (tapOk()) renderMenu('practice'); } }, '🧰 れんしゅう'),
-          h('button', { type: 'button', class: 'big-btn white', onclick: () => { if (tapOk()) renderHome(); } }, 'もどる')))]);
+          h('button', { type: 'button', class: 'big-btn white', onclick: () => { if (tapOk()) renderTop(); } }, 'もどる')))]);
       return;
     }
     ses = { start: Date.now(), from: lv, cur: lv, tools: [], checks: [], reason: null, feeling: null, body: [], next: null, helped: false };
@@ -878,7 +1057,7 @@ function jaSay(t) {
           mode !== 'help' && p.practice[id] ? h('span', { class: 'cnt' }, '⭐' + p.practice[id]) : null,
           E(t.e), h('b', null, t.n), h('small', null, t.d));
       })),
-      h('div', { class: 'tfoot' }, mode === 'help' ? quitBtn(() => endHelp(true)) : h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) renderHome(); } }, '◀ もどる'), h('span'))
+      h('div', { class: 'tfoot' }, mode === 'help' ? quitBtn(() => endHelp(true)) : h('button', { type: 'button', class: 'mid-btn', onclick: () => { if (tapOk()) renderTop(); } }, '◀ もどる'), h('span'))
     ]);
     speak(title);
   }
@@ -893,7 +1072,7 @@ function jaSay(t) {
       h('div', { class: 'thead' }, E(t.e), h('span', null, t.n)),
       body,
       h('div', { class: 'tfoot' },
-        quitBtn(() => { if (ses) endHelp(true); else renderHome(); }),
+        quitBtn(() => { if (ses) endHelp(true); else renderTop(); }),
         h('button', { type: 'button', class: 'skip', onclick: () => { if (tapOk()) finish(); } }, ses ? 'つぎへ ▶' : 'おわる ▶'))
     ]);
     keepAwake();
@@ -914,7 +1093,7 @@ function jaSay(t) {
       h('div', { class: 'actions' },
         h('button', { type: 'button', class: 'big-btn go', onclick: () => { if (tapOk()) runTool(id); } }, '🔁 もういちど'),
         h('button', { type: 'button', class: 'big-btn blue', onclick: () => { if (tapOk()) renderMenu('practice'); } }, '🧰 ほかの どうぐ'),
-        h('button', { type: 'button', class: 'big-btn white', onclick: () => { if (tapOk()) renderHome(); } }, '🏠 おわる')))]);
+        h('button', { type: 'button', class: 'big-btn white', onclick: () => { if (tapOk()) renderTop(); } }, '🏠 おわる')))]);
   }
   // きもちの ふりかえり
   function renderCheck(id) {
@@ -969,7 +1148,7 @@ function jaSay(t) {
       trim(p); persist();
     }
     const s = ses; ses = null;
-    if (stopped || !s) { renderHome(); return; }
+    if (stopped || !s) { renderTop(); return; }
     screen = 'goal';
     tint('cool');
     const v = volcano(s.cur, true);
@@ -977,7 +1156,7 @@ function jaSay(t) {
       h('h1', { class: 'title', style: 'color:var(--teal)' }, 'じぶんで おちつけたね！'),
       v,
       h('div', { class: 'hello' }, LV[s.from].e + ' ' + LV[s.from].n + '  →  ' + LV[s.cur].e + ' ' + LV[s.cur].n, h('br'), '⭐ が ひとつ ふえたよ'),
-      h('div', { class: 'actions' }, h('button', { type: 'button', class: 'big-btn go', onclick: () => { if (tapOk()) renderHome(); } }, '🏠 おわる')))]);
+      h('div', { class: 'actions' }, h('button', { type: 'button', class: 'big-btn go', onclick: () => { if (tapOk()) renderTop(); } }, '🏠 おわる')))]);
     sfx.fanfare(); praise('すごい！');
     speak('じぶんで おちつけたね！ すごいよ');
   }
@@ -1406,7 +1585,7 @@ function jaSay(t) {
      先生用せってい
      ============================================================ */
   function openSettings() { stopSpeak(); renderSettings(); $('#settings').classList.add('open'); $('#settings').scrollTop = 0; }
-  function closeSettings() { persist(); $('#settings').classList.remove('open'); document.body.classList.toggle('calm', !!S().calm); if (['home', 'who', 'menu', 'calm', 'pdone', 'goal'].indexOf(screen) >= 0) { if (screen === 'menu' && !ses) renderMenu('practice'); else if (screen === 'who') renderWho(); else if (screen !== 'menu') renderHome(); } updateChips(); }
+  function closeSettings() { persist(); $('#settings').classList.remove('open'); document.body.classList.toggle('calm', !!S().calm); if (screen === 'start') renderStart(); else if (screen === 'home') renderHome(); else if (screen === 'who') renderWho(); else if (screen === 'menu' && !ses) renderMenu('practice'); else if (['calm', 'pdone', 'goal'].indexOf(screen) >= 0) renderTop(); updateChips(); }
   function refresh() { const m = $('#settings'), y = m.scrollTop; renderSettings(); m.scrollTop = y; }
   const setS = (k, v) => { S()[k] = v; persist(); refresh(); };
   function seg(value, opts, onPick) { return h('div', { class: 'seg' }, opts.map(o => h('button', { type: 'button', class: String(o[0]) === String(value) ? 'on' : '', onclick: () => onPick(o[0]) }, o[1]))); }
@@ -1488,7 +1667,8 @@ function jaSay(t) {
       chk('よみあげ', 'voice'), chk('こうかおん・なみの おと', 'sound'),
       srow('おおきさ', h('input', { type: 'range', min: '0.2', max: '1', step: '0.1', value: st.volume, onchange: e => { st.volume = Number(e.target.value); persist(); } })),
       srow('よみあげの はやさ', seg(st.rate, [[0.75, 'ゆっくり'], [0.9, 'ふつう'], [1.05, 'はやめ']], v => setS('rate', Number(v)))),
-      chk('うごきを ひかえめに（はなび・ゆれ なし）', 'calm'));
+      chk('うごきを ひかえめに（はなび・ゆれ なし）', 'calm'),
+      srow('はじめの 画面', seg(st.startMode, [['menu', 'モードを えらぶ'], ['feel', 'すぐ「いま どんな きもち？」']], v => setS('startMode', v)), 'おこった ときに すぐ つかう 子は「すぐ」が おすすめです'));
 
     // きろく
     add(h('h3', null, '📊 きろく'),
@@ -1519,7 +1699,8 @@ function jaSay(t) {
     const box = h('div');
     const helps = p.records.filter(r => r.mode === 'help');
     const pr = p.records.filter(r => r.mode === 'practice');
-    if (!helps.length && !pr.length) { box.append(h('p', { class: 'note' }, 'まだ きろくが ありません。')); return box; }
+    const ck = p.records.filter(r => r.mode === 'checkin');
+    if (!helps.length && !pr.length && !ck.length) { box.append(h('p', { class: 'note' }, 'まだ きろくが ありません。')); return box; }
     const done = helps.filter(r => !r.stopped);
     const avg = a => a.length ? (a.reduce((s, x) => s + x, 0) / a.length) : 0;
     const mins = avg(done.map(r => (r.sec || 0) / 60));
@@ -1527,7 +1708,9 @@ function jaSay(t) {
       h('div', null, h('b', null, helps.length + 'かい'), 'クールダウン（おちついた ' + done.length + '）'),
       h('div', null, h('b', null, done.length ? avg(done.map(r => r.from)).toFixed(1) + ' → ' + avg(done.map(r => r.to)).toFixed(1) : '―'), 'きもちの つよさ（まえ → あと）'),
       h('div', null, h('b', null, done.length ? mins.toFixed(1) + 'ふん' : '―'), 'おちつくまでの じかん（へいきん）'),
-      h('div', null, h('b', null, pr.length + 'かい'), 'れんしゅう')));
+      h('div', null, h('b', null, pr.length + 'かい'), 'れんしゅう'),
+      h('div', null, h('b', null, ck.length ? ck.length + 'かい（' + avg(ck.map(r => r.from)).toFixed(1) + '）' : '―'), 'きもち チェック（へいきん）')));
+    if (ck.length) box.append(h('p', { class: 'note', style: 'color:var(--ink)' }, h('b', null, 'さいきんの きもち チェック：'), ck.slice(-14).map(r => fmtDate(r.t).split(' ')[0] + ' ' + LV[r.from].e).join('　')));
     const sc = toolScores(p);
     const rows = Object.keys(sc).filter(id => TOOLS[id]).map(id => [id, sc[id].sum / sc[id].n, sc[id].n]).sort((a, b) => b[1] - a[1]);
     if (rows.length) {
@@ -1553,7 +1736,7 @@ function jaSay(t) {
     const lines = [['日付', '時刻', '種類', 'まえ', 'あと', 'どうぐ', 'なにがあった', 'きもち', 'からだ', 'このあと', '分', 'とちゅう終了'].map(q).join(',')];
     p.records.forEach(r => {
       const d = new Date(r.t);
-      lines.push([ymd(r.t), d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'), r.mode === 'help' ? 'クールダウン' : 'れんしゅう',
+      lines.push([ymd(r.t), d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'), r.mode === 'help' ? 'クールダウン' : r.mode === 'checkin' ? 'きもちチェック' : 'れんしゅう',
         r.from != null ? r.from + ' ' + LV[r.from].n : '', r.to != null ? r.to + ' ' + LV[r.to].n : '',
         (r.tools || []).map(id => TOOLS[id] ? TOOLS[id].n : id).join(' / '), r.reason, r.feeling, (r.body || []).join(' / '), r.next,
         r.sec ? (r.sec / 60).toFixed(1) : '', r.stopped ? 'はい' : ''].map(q).join(','));
@@ -1580,7 +1763,7 @@ function jaSay(t) {
      ============================================================ */
   document.body.classList.toggle('calm', !!S().calm);
   if (canSpeak) { loadVoice(); if ('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = loadVoice; }
-  if (store.profiles.length > 1 && !EMBED) renderWho(); else renderHome();
+  if (store.profiles.length > 1 && !EMBED) renderWho(); else renderTop();
 })();
 </script>
 </body>
