@@ -834,8 +834,8 @@ function jaSay(t) {
       const st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
       if (g !== gen) { st.getTracks().forEach(t => t.stop()); return null; }
       const a = actx(); if (!a) { st.getTracks().forEach(t => t.stop()); return null; }
-      const src = a.createMediaStreamSource(st), an = a.createAnalyser();
-      an.fftSize = 1024; src.connect(an);
+      const src = a.createMediaStreamSource(st), an = a.createAnalyser(), lp = a.createBiquadFilter();
+      lp.type = 'lowpass'; lp.frequency.value = 1200; an.fftSize = 1024; src.connect(lp); lp.connect(an);
       onStop(() => { st.getTracks().forEach(t => t.stop()); try { src.disconnect(); } catch (e) { /* 無視 */ } });
       const buf = new Uint8Array(an.fftSize);
       return () => { an.getByteTimeDomainData(buf); let s = 0; for (let i = 0; i < buf.length; i++) { const v = (buf[i] - 128) / 128; s += v * v; } return Math.sqrt(s / buf.length); };
@@ -1241,26 +1241,28 @@ function jaSay(t) {
       let level = null;
       if (S().mic) { micMsg.textContent = '🎤 マイクを じゅんび しています…'; level = await startMic(); }
       bb.hidden = false;
-      let thr = 1;
+      let thr = 1; const FULL = 0.06;
       if (level) {
         msg.textContent = 'しずかに まってね… 🤫'; sub.textContent = ''; micMsg.textContent = '🎤 マイクで いきを きいています（ろくおん しません）';
-        let mx = 0; const t0 = performance.now();
-        await new Promise(res => frame(() => { mx = Math.max(mx, level()); if (performance.now() - t0 > 1200) { res(); return false; } }));
-        const base = { low: 0.09, mid: 0.05, high: 0.028 }[S().micSense] || 0.05;
-        thr = Math.max(base, mx * 2.2);
-        meter.querySelector('b').hidden = false; meter.querySelector('b').style.left = Math.min(96, thr / 0.25 * 100) + '%';
+        // まわりの 音の 大きさ（へいきん）を はかって、それより はっきり 大きい 音を「ふーっ」と みる
+        let sum = 0, cnt = 0; const t0 = performance.now();
+        await new Promise(res => frame(() => { sum += level(); cnt++; if (performance.now() - t0 > 1200) { res(); return false; } }));
+        const amb = cnt ? sum / cnt : 0;
+        const base = { max: 0.004, high: 0.007, mid: 0.012, low: 0.025 }[S().micSense] || 0.012;
+        thr = Math.max(base, amb * 2.4 + 0.002);
+        meter.querySelector('b').hidden = false; meter.querySelector('b').style.left = Math.min(96, thr / FULL * 100) + '%';
         bb.textContent = '👇 マイクが うまく いかない ときは おしながら ふーっ'; bb.style.fontSize = '17px';
       } else micMsg.textContent = S().mic ? '🎤 マイクが つかえないので、ボタンを おしながら ふーっと してね' : '';
       let k = 0, prog = 0, quietUntil = 0;
-      const need = 1.1; // ろうそく 1本に ひつような ふーっ（びょう）
+      const need = 0.8; // ろうそく 1本に ひつような ふーっ（びょう）
       const mark = () => candles.forEach((c, i) => c.classList.toggle('now', i === k));
       mark(); msg.textContent = 'ふーーっ！'; sub.textContent = (k + 1) + 'ほんめ';
       frame(dt => {
         const lv = level ? level() : 0;
         const now = performance.now();
         const blowing = pressing || (level && lv > thr && !speaking() && now > quietUntil);
-        meter.firstChild.style.width = Math.min(100, (pressing ? 0.2 : lv) / 0.25 * 100) + '%';
-        if (blowing) prog += dt / 1000; else prog = Math.max(0, prog - dt / 3000);
+        meter.firstChild.style.width = Math.min(100, (pressing ? FULL * 0.8 : lv) / FULL * 100) + '%';
+        if (blowing) prog += dt / 1000; else prog = Math.max(0, prog - dt / 6000);
         const c = candles[k], f = c.querySelector('.flame');
         f.style.setProperty('--f', String(Math.max(0.25, 1 - prog / need * 0.7)));
         f.style.setProperty('--sk', blowing ? (Math.random() * 30 - 15) + 'deg' : '0deg');
@@ -1649,7 +1651,7 @@ function jaSay(t) {
       srow('すう・はく（びょう）', seg(st.breathPace, [['3-5', '3・5'], ['4-6', '4・6'], ['5-7', '5・7']], v => setS('breathPace', v)), 'はく ほうを ながく すると おちつきやすく なります'),
       h('h4', null, '🕯️ ろうそく ふーっ'),
       srow('ろうそくの かず', seg(st.candles, [[3, '3ぼん'], [5, '5ほん']], v => setS('candles', Number(v)))),
-      srow('マイクの かんど', seg(st.micSense, [['high', 'よわい いきでも'], ['mid', 'ふつう'], ['low', 'つよく ふく']], v => setS('micSense', v)), 'まわりが うるさい ときは「つよく ふく」に'),
+      srow('マイクの かんど', seg(st.micSense, [['max', 'とても よわい いきでも'], ['high', 'よわい いきでも'], ['mid', 'ふつう'], ['low', 'つよく ふく']], v => setS('micSense', v)), 'はじめに まわりの 音を はかって 自動で あわせます。まだ きえにくい ときは「よわい いきでも」に、話し声でも きえて しまう ときは「つよく ふく」に'),
       h('h4', null, '🔢 かぞえて おちつく'),
       srow('かぞえかた', seg(st.countMode, [['down5', '5→1'], ['down10', '10→1'], ['up10', '1→10'], ['down20', '20→1']], v => setS('countMode', v))),
       h('h4', null, '🫧 しずかに やすむ'),
